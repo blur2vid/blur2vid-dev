@@ -53,6 +53,7 @@
 <script src="js/LimitationsViewer.js"></script>
 <script src="js/PoseViewer.js"></script>
 <script src="js/ResControl.js"></script>
+<script src="js/MultimodalViewer.js"></script>
 
 
 
@@ -954,6 +955,148 @@
   </section>
   
   <br/>
+
+
+<section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Multimodal Generation</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          A short blurb on multimodal generation.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='multi-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+        <div id="multi-method-toggle" class="buttons is-centered">
+          <button class="button is-info" data-method="present" onclick="multimodal_viewer.set_method('present')">Present Predictions</button>
+          <button class="button is-info is-light" data-method="pastfuture" onclick="multimodal_viewer.set_method('pastfuture')">Past & Future Predictions</button>
+        </div>
+        <!-- <h3 class="subtitle">Video Reconstruction</h3> -->
+        <!-- Blurry Image centered -->
+        <div class="has-text-centered" style="margin-bottom: 1em;">
+          <img id="multi-input" style="width: 40%; border-radius: 1em; margin-bottom: 0.75em" />
+          <h5 style="font-size: 1.5em;  padding: 0.5em;"> <strong>Blurry Image  </strong></h5>
+        </div>
+  
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 1</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!-- <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Ours</th> -->
+              <td>
+                <video id="multi-1" muted 
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+              <td>
+                <video id="multi-2" muted
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+              <!-- <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">MotionETR</th> -->
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 3</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 4</th>
+            </tr>
+              
+              <td>
+                <video id="multi-3" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+              <td>
+                <video id="multi-4" muted
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+            </tr>
+            <!-- <tr class="hide-on-pastfuture">
+              <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Jin et al.</th>
+              <td>
+                <video id="multi-jin" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+              <td>
+                <video id="multi-jin-tracks" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+            </tr> -->
+          </tbody>
+        </table>
+        
+  
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="multi-play-pause-btn" class="button is-info" onclick="multimodal_viewer.toggle_play_pause()">
+              <span class="icon"><i id="multi-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="multi_frame_control"
+              class="frame-slider"
+              oninput="multimodal_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="multi-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="multi-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="multi-legend-future"><span class="color-box future"></span>Future Predictions</div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+  
+        <!-- Additional Comparison Table
+        <table style="width: 100%; border-collapse: collapse; text-align: center; margin-top: 1em;">
+          <thead>
+            <tr>
+              <th></th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">3D reconstruction (from past, present, and future prediction)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em; text-align: center; vertical-align: middle;">MegaSAM on Ours</th>
+              <td style="width: 70%;">
+                <video id="multi-megasam"  muted autoplay loop 
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+              <td style="width: 30%; vertical-align: middle;">
+                <div style="font-size: 1.5em;  font-weight: bold; margin-bottom: 0.5em;">camera poses</div>
+                <video id="multi-megasam-poses"  muted autoplay loop
+                style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+   -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
   
   </body>
   </html>

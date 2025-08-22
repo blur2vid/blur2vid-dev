@@ -44,7 +44,7 @@
 </head>
 <body>
 
-  <script src="js/main.js"></script>
+<script src="js/main.js"></script>
 <script src="js/SimulatedViewer.js"></script>
 <script src="js/InTheWildViewer.js"></script>
 <script src="js/HistoricalViewer.js"></script>
@@ -54,6 +54,7 @@
 <script src="js/PoseViewer.js"></script>
 <script src="js/ResControl.js"></script>
 <script src="js/MultimodalViewer.js"></script>
+<script src="js/EmbeddingViewer.js"></script>
 
 
 
@@ -1018,17 +1019,6 @@
                        style="width: 95%; border-radius: 1em;;"></video>
               </td>
             </tr>
-            <!-- <tr class="hide-on-pastfuture">
-              <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Jin et al.</th>
-              <td>
-                <video id="multi-jin" muted 
-                       style="width: 95%; border-radius: 1em;;"></video>
-              </td>
-              <td>
-                <video id="multi-jin-tracks" muted 
-                       style="width: 95%; border-radius: 1em;;"></video>
-              </td>
-            </tr> -->
           </tbody>
         </table>
         
@@ -1068,35 +1058,101 @@
             </div>
           </div> 
         </div> <!-- container is-max-desktop -->
-  
-        <!-- Additional Comparison Table
-        <table style="width: 100%; border-collapse: collapse; text-align: center; margin-top: 1em;">
-          <thead>
-            <tr>
-              <th></th>
-              <th style="font-size: 1.5em;  padding: 0.5em;">3D reconstruction (from past, present, and future prediction)</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th style="font-size: 1.5em;  padding: 0.5em; text-align: center; vertical-align: middle;">MegaSAM on Ours</th>
-              <td style="width: 70%;">
-                <video id="multi-megasam"  muted autoplay loop 
-                       style="width: 95%; border-radius: 1em;"></video>
-              </td>
-              <td style="width: 30%; vertical-align: middle;">
-                <div style="font-size: 1.5em;  font-weight: bold; margin-bottom: 0.5em;">camera poses</div>
-                <video id="multi-megasam-poses"  muted autoplay loop
-                style="width: 95%; border-radius: 1em;"></video>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-   -->
       </div> <!-- hero-body -->
     </div> <!-- section container -->
   </section>
   
+
+<section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Local vs Global Embedding</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          A short blurb on local vs global embedding.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='emb-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Blurry Image</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Ground Truth</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img id="emb-blurry" style="width: 95%; border-radius: 1em" />
+              </td>
+              <td>
+                <video id="emb-ground-truth" muted
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Local Embedding</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Global Embedding</th>
+            </tr>
+              
+              <td>
+                <video id="emb-local" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+              <td>
+                <video id="emb-global" muted
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+  
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="emb-play-pause-btn" class="button is-info" onclick="embedding_viewer.toggle_play_pause()">
+              <span class="icon"><i id="emb-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="emb_frame_control"
+              class="frame-slider"
+              oninput="embedding_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="emb-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="emb-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="emb-legend-future"><span class="color-box future"></span>Future Predictions</div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
+
   </body>
   </html>

@@ -112,10 +112,10 @@ class MultimodalViewer {
     loadVideos() {
         const scene = this.base_im;
         const method = this.method;
-        const v1_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/Ours.mp4`;
-        const v2_path = `${this.assets_path}/${this.prefix}/tracks/${scene}/${method}/Ours.mp4`;
-        const v3_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/MotionETR.mp4`;
-        const v4_path = `${this.assets_path}/${this.prefix}/tracks/${scene}/${method}/MotionETR.mp4`;
+        const v1_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/v1.mp4`;
+        const v2_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/v2.mp4`;
+        const v3_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/v3.mp4`;
+        const v4_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/v4.mp4`;
 
         this.v1.src = v1_path;
         this.v1.load();

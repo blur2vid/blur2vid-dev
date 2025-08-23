@@ -55,7 +55,7 @@
 <script src="js/ResControl.js"></script>
 <script src="js/MultimodalViewer.js"></script>
 <script src="js/EmbeddingViewer.js"></script>
-
+<script src="js/ExposureControlViewer.js"></script>
 
 
 <section class="hero">
@@ -1055,6 +1055,106 @@
               <div class="legend-item" id="multi-legend-past"><span class="color-box past"></span>Past Predictions</div>
               <div class="legend-item" id="multi-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
               <div class="legend-item" id="multi-legend-future"><span class="color-box future"></span>Future Predictions</div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
+
+
+    <!-- EXPOSURE CONTROL RESULTS-->
+  <section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Exposure Interval Control</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          A short blurb on exposure interval control.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='expcontrol-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+        <!-- <div id="expcontrol-method-toggle" class="buttons is-centered">
+          <button class="button is-info" data-method="present" onclick="exposure_control_viewer.set_method('present')">Present Predictions</button>
+          <button class="button is-info is-light" data-method="pastfuture" onclick="exposure_control_viewer.set_method('pastfuture')">Past & Future Predictions</button>
+        </div> -->
+        <div id="expcontrol-method-toggle" class="buttons is-centered">
+          <button class="button is-info"        data-method="2frame"  onclick="exposure_control_viewer.set_method('2frame')">2 frames</button>
+          <button class="button is-info is-light" data-method="4frame"  onclick="exposure_control_viewer.set_method('4frame')">4 frames</button>
+          <button class="button is-info is-light" data-method="8frame"  onclick="exposure_control_viewer.set_method('8frame')">8 frames</button>
+          <button class="button is-info is-light" data-method="16frame"  onclick="exposure_control_viewer.set_method('16frame')">16 frames</button>
+          <button class="button is-info is-light" data-method="1deadtime" onclick="exposure_control_viewer.set_method('1deadtime')">1 deadtime</button>
+        </div>
+
+        <!-- <h3 class="subtitle">Video Reconstruction</h3> -->
+        <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: center;">
+          <!-- Blurry input image
+          <div style="flex: 0 0 30%; max-width: 30%;">
+            <img id="simulated-input" src="assets/simulated/blurry/0000_present.png" style="width: 100%; border-radius: 1em; margin-bottom: 1em;" />
+            <h5 class="subtitle" style="font-size: 1.5em; ">Blurry Image</h5>
+          </div>
+        
+          <div style="flex: 0 0 60%; max-width: 60%;">
+            <img id="simulated-output" src="assets/simulated/frames/0000/present/0000.png" style="width: 100%; border-radius: 1em; margin-bottom: 1em;" />
+            <h5 class="subtitle" style="font-size: 1.5em; ">Recovered Video</h5>
+          </div>
+        </div> -->
+          <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Blurry Image</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Recovered Video</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img id="expcontrol-blurry" style="width: 95%; border-radius: 1em" />
+              </td>
+              <td>
+                <video id="expcontrol-vid" muted
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+          </tbody>
+        </table>
+          
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="expcontrol-play-pause-btn" class="button is-info" onclick="exposure_control_viewer.toggle_play_pause()">
+              <span class="icon"><i id="expcontrol-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="expcontrol_frame_control"
+              class="frame-slider"
+              oninput="exposure_control_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="expcontrol-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="expcontrol-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="expcontrol-legend-future"><span class="color-box future"></span>Future Predictions</div>
             </div>
           </div> 
         </div> <!-- container is-max-desktop -->

@@ -4,8 +4,6 @@ class MultimodalViewer {
         this.max_idx = 16;
         this.n_scenes = 4;
         this.playback_speed = 0.2;
-
-        this.num_videos = 6;
         
         this.cur_frame = 0;
         this.base_im = '0000';

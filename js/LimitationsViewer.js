@@ -21,8 +21,6 @@ class LimitationsViewer {
         this.jin_recon = document.getElementById(`${this.prefix}-jin`);
         this.jin_tracks = document.getElementById(`${this.prefix}-jin-tracks`);
         this.input_img = document.getElementById(`${this.prefix}-input`);
-        // this.mega_sam = document.getElementById(`${this.prefix}-megasam`);
-        // this.mega_sam_poses = document.getElementById(`${this.prefix}-megasam-poses`);
         
 
         this.video_elements = [this.ours_recon, this.ours_tracks, this.motionetr_recon, this.motionetr_tracks, this.jin_recon, this.jin_tracks];
@@ -32,7 +30,6 @@ class LimitationsViewer {
         this.isPlaying = true;
         this.toggle_play_pause();
         this.change_scene(this.base_im);  // triggers loadVideos with the default scene
-
 
         //this.initialize_slider_sync();
     }
@@ -61,59 +58,83 @@ class LimitationsViewer {
         }
     }
 
+    initSliderThumbBar() {
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (!slider) return;
 
+        // 16 intervals → 16 positions → 0..15
+        slider.min = 0;
+        slider.max = this.max_idx - 1;   // was: this.max_idx
+        slider.step = 1;
+
+        // for CSS that sizes the bar/segment width (16 intervals)
+        slider.style.setProperty('--intervals', this.max_idx); // stays 16
+
+        // keep current value in range if something set it earlier
+        if (parseInt(slider.value, 10) > this.max_idx - 1) slider.value = this.max_idx - 1;
+    }
 
     /* Slider sync combining both versions */
     initSliderSync() {
         if (!this.ours_recon) return;
         const slider = document.getElementById(`${this.prefix}_frame_control`);
         if (!slider) return;
+
+        this.initSliderThumbBar();
+
         this.ours_recon.addEventListener('loadedmetadata', () => {
             this.ours_recon.addEventListener('timeupdate', () => {
-                if (!this.ours_recon.duration) return;
-                const progress = this.ours_recon.currentTime / this.ours_recon.duration;
+            if (!this.ours_recon.duration) return;
+            const progress = this.ours_recon.currentTime / this.ours_recon.duration; // 0..1
+            const k = Math.min(Math.floor(progress * this.max_idx), this.max_idx - 1); // 0..15
 
-                const newVal = Math.round(progress * ((this.max_idx) || parseInt(slider.max) ));
-                if (parseInt(slider.value) !== newVal) {
-                    slider.value = newVal;
-                    this.cur_frame = newVal;
-                    this.applyGlowEffect();
-                }
+            if (parseInt(slider.value, 10) !== k) {
+                slider.value = k;
+                this.cur_frame = k;
+                this.applyGlowEffect();
+            }
             });
         });
     }
+
     /* Update frame on slider  */
     change_frame(idx) {
-        //this.stop_anim();
-        this.cur_frame = parseInt(idx);
-        const norm = this.cur_frame / (this.max_idx);
+        const k = Math.max(0, Math.min(this.max_idx - 1, parseInt(idx, 10))); // 0..15
+        this.cur_frame = k;
+
+        // Seek to middle of [k, k+1] so UI & playback align to the interval
+        const norm = (k + 0.5) / this.max_idx; // 0..1
         this.video_elements.forEach(video => {
             if (video && video.duration) {
-                video.currentTime = norm * video.duration;
-
+            video.currentTime = norm * video.duration;
             }
-
         });
+
+        // keep the range control in sync
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (slider && parseInt(slider.value, 10) !== k) slider.value = k;
+
         this.applyGlowEffect();
     }
-
-    setResolution(resolution) {
-        this.ds = resolution === "half";
-        this.assets_path = this.ds ? `ds_assets` : `assets`;
-        this.change_scene(this.base_im);  // reload videos with new resolution
-    }
-
 
     /* Scene change handler */
     change_scene(scene_id) {
         this.base_im = scene_id;
         this.cur_frame = 0;
         if (this.input_img) {
-            console.log("Changing scene to: " + scene_id);
             this.input_img.src = `${this.assets_path}/${this.prefix}/blurry/${scene_id}_present.png`;
         }
         this.loadVideos();
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(0);
+    }
+
+
+    setResolution(resolution) {
+        console.log(`Setting resolution to: ${resolution}`);
+        this.ds = resolution === "half";
+        this.assets_path = this.ds ? `ds_assets` : `assets`;
+        this.change_scene(this.base_im);  // reload videos with new resolution
     }
 
     /* Load video sources */
@@ -127,7 +148,6 @@ class LimitationsViewer {
         const jin_reconPath = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}/Jin.mp4`;
         const jin_tracksPath = `${this.assets_path}/${this.prefix}/tracks/${scene}/${method}/Jin.mp4`;
         const method_not_supported_path = `${this.assets_path}/extra_stuff/method_not_supported.mp4`;
-        //const mega_sam_path = `${this.assets_path}/${this.prefix}/megasam/${scene}/${method}/Ours.mp4`;
 
         this.ours_recon.src = ours_reconPath;
         this.ours_recon.load();
@@ -136,10 +156,6 @@ class LimitationsViewer {
         this.ours_tracks.src = ours_tracksPath;
         this.ours_tracks.load();
         this.ours_tracks.currentTime = 0;
-
-        // this.mega_sam.src = mega_sam_path;
-        // this.mega_sam.load();
-        // this.mega_sam.currentTime = 0;
         
         if (this.method === 'pastfuture') {
             this.motionetr_recon.src = method_not_supported_path;
@@ -191,9 +207,6 @@ class LimitationsViewer {
             const delayMs = 100;
             this.cycle_frames(delayMs);
         }
-    
-
-
         // flip the play/pause button state
         this.updatePlayButton();
     }
@@ -212,10 +225,9 @@ class LimitationsViewer {
         }
     }
 
-
     /* Animation controls */
     next_frame() {
-        if (this.cur_frame >= this.max_idx) this.anim_dir = -1;
+        if (this.cur_frame >= this.max_idx - 1) this.anim_dir = -1; // was: >= this.max_idx
         if (this.cur_frame === 0) this.anim_dir = 1;
         this.change_frame(this.cur_frame + this.anim_dir);
     }
@@ -256,6 +268,7 @@ class LimitationsViewer {
             const el = document.getElementById(`${this.prefix}-legend-${region}`);
             if (el) el.style.display = name === "pastfuture" ? "inline-flex" : "none";
         });
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(this.cur_frame);
     }
 }

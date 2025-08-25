@@ -52,50 +52,73 @@ class MultimodalViewer {
         }
     }
 
+    initSliderThumbBar() {
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (!slider) return;
 
+        // 16 intervals → 16 positions → 0..15
+        slider.min = 0;
+        slider.max = this.max_idx - 1;   // was: this.max_idx
+        slider.step = 1;
+
+        // for CSS that sizes the bar/segment width (16 intervals)
+        slider.style.setProperty('--intervals', this.max_idx); // stays 16
+
+        // keep current value in range if something set it earlier
+        if (parseInt(slider.value, 10) > this.max_idx - 1) slider.value = this.max_idx - 1;
+    }
 
     /* Slider sync combining both versions */
     initSliderSync() {
-        if (!this.v1) return;
+        if (!this.ours_recon) return;
         const slider = document.getElementById(`${this.prefix}_frame_control`);
         if (!slider) return;
-        this.v1.addEventListener('loadedmetadata', () => {
-            this.v1.addEventListener('timeupdate', () => {
-                if (!this.v1.duration) return;
-                const progress = this.v1.currentTime / this.v1.duration;
 
-                const newVal = Math.round(progress * ((this.max_idx) || parseInt(slider.max) ));
-                if (parseInt(slider.value) !== newVal) {
-                    slider.value = newVal;
-                    this.cur_frame = newVal;
-                    this.applyGlowEffect();
-                }
+        this.initSliderThumbBar();
+
+        this.ours_recon.addEventListener('loadedmetadata', () => {
+            this.ours_recon.addEventListener('timeupdate', () => {
+            if (!this.ours_recon.duration) return;
+            const progress = this.ours_recon.currentTime / this.ours_recon.duration; // 0..1
+            const k = Math.min(Math.floor(progress * this.max_idx), this.max_idx - 1); // 0..15
+
+            if (parseInt(slider.value, 10) !== k) {
+                slider.value = k;
+                this.cur_frame = k;
+                this.applyGlowEffect();
+            }
             });
         });
     }
+
     /* Update frame on slider change */
     change_frame(idx) {
-        //this.stop_anim();
-        this.cur_frame = parseInt(idx);
-        const norm = this.cur_frame / (this.max_idx);
+        const k = Math.max(0, Math.min(this.max_idx - 1, parseInt(idx, 10))); // 0..15
+        this.cur_frame = k;
+
+        // Seek to middle of [k, k+1] so UI & playback align to the interval
+        const norm = (k + 0.5) / this.max_idx; // 0..1
         this.video_elements.forEach(video => {
             if (video && video.duration) {
-                video.currentTime = norm * video.duration;
-
+            video.currentTime = norm * video.duration;
             }
-
         });
+
+        // keep the range control in sync
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (slider && parseInt(slider.value, 10) !== k) slider.value = k;
+
         this.applyGlowEffect();
     }
-
     /* Scene change handler */
     change_scene(scene_id) {
         this.base_im = scene_id;
         this.cur_frame = 0;
         if (this.input_img) {
-            this.input_img.src = `${this.assets_path}/${this.prefix}/blurry/${scene_id}_present.png`; //present and pastfuture are the same
+            this.input_img.src = `${this.assets_path}/${this.prefix}/blurry/${scene_id}_present.png`;
         }
         this.loadVideos();
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(0);
     }
 
@@ -166,7 +189,7 @@ class MultimodalViewer {
 
     /* Animation controls */
     next_frame() {
-        if (this.cur_frame >= this.max_idx) this.anim_dir = -1;
+        if (this.cur_frame >= this.max_idx - 1) this.anim_dir = -1; // was: >= this.max_idx
         if (this.cur_frame === 0) this.anim_dir = 1;
         this.change_frame(this.cur_frame + this.anim_dir);
     }
@@ -207,6 +230,7 @@ class MultimodalViewer {
             const el = document.getElementById(`${this.prefix}-legend-${region}`);
             if (el) el.style.display = name === "pastfuture" ? "inline-flex" : "none";
         });
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(this.cur_frame);
     }
 }

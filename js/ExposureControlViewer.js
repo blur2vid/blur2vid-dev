@@ -18,9 +18,9 @@ class ExposureControlViewer {
 
         // Cache DOM elements
         this.input_img = document.getElementById(`${this.prefix}-blurry`);
-        this.vid       = document.getElementById(`${this.prefix}-vid`);
-        this.video_elements = [this.vid];
-
+        this.gt_vid = document.getElementById(`${this.prefix}-gt`); 
+        this.vid = document.getElementById(`${this.prefix}-vid`);
+        this.video_elements = [this.gt_vid, this.vid];
         // Build scene selector, slider sync
         this.initSceneSelector();
         this.initSliderSync();
@@ -196,12 +196,16 @@ class ExposureControlViewer {
     loadVideos() {
         const scene  = this.base_im;
         const method = this.method;
+        const gt_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}_GT.mp4`;
         const vid_path = `${this.assets_path}/${this.prefix}/videos/${scene}/${method}.mp4`;
+
+        this.gt_vid.src = gt_path;
+        this.gt_vid.load();
+        this.gt_vid.currentTime = 0;
 
         this.vid.src = vid_path;
         this.vid.load();
         this.vid.currentTime = 0;
-        this.vid.pause();
     }
 
     /* ---------------- Playback controls ---------------- */

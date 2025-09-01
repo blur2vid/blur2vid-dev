@@ -27,6 +27,8 @@ class ExposureControlViewer {
 
         // Prepare slider/ticks for current method
         this.updateSliderForMethod();
+        this.updateDeadtimeStyle();
+        this.updateDeadtimeLegend();
 
         // Start paused; call toggle_play_pause() if you want autoplay
         this.isPlaying = false;
@@ -68,6 +70,19 @@ class ExposureControlViewer {
         return this.method === '1deadtime' ? 2 : 1;
     }
 
+    updateDeadtimeStyle() {
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        const container = slider?.closest('.slider-container');
+        if (!container) return;
+        container.classList.toggle('deadtime-mode', this.method === '1deadtime');
+    }
+
+    updateDeadtimeLegend() {
+        const el = document.getElementById(`${this.prefix}-legend-deadtime`);
+        if (!el) return;
+        const show = (this.method === '1deadtime');
+        el.classList.toggle('is-hidden', !show);
+    }
 
     /* ---------------- UI builders ---------------- */
 
@@ -277,7 +292,9 @@ class ExposureControlViewer {
 
         // Update slider/ticks for new method
         this.updateSliderForMethod();
-
+        this.updateDeadtimeStyle();
+        this.updateDeadtimeLegend();
+        
         // Update blurry image (per-method)
         if (this.input_img) {
         this.input_img.src = `${this.assets_path}/${this.prefix}/blurry/${this.base_im}_${this.method}.png`;

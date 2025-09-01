@@ -308,3 +308,94 @@ body {
 
 /* Let the input background show on Firefox */
 .frame-slider::-moz-range-track { background: transparent; border: none; }
+
+
+/* =========================
+   Deadtime mode (alternating segments)
+   ========================= */
+
+/* Define colors for live (on) and dead (off) intervals */
+.deadtime-mode {
+  --on:  #e6ffd0;  /* green */
+  --off: #f0f0f0;  /* grey */
+}
+
+/* Whole slider track background in deadtime mode */
+.deadtime-mode .frame-slider {
+  background:
+    repeating-linear-gradient(
+      to right,
+      var(--on)  0 calc(100% / var(--intervals)),
+      var(--off) calc(100% / var(--intervals)) calc(200% / var(--intervals))
+    ) !important;
+}
+
+/* WebKit/Blink specific track */
+.deadtime-mode .frame-slider::-webkit-slider-runnable-track {
+  background:
+    repeating-linear-gradient(
+      to right,
+      var(--on)  0 calc(100% / var(--intervals)),
+      var(--off) calc(100% / var(--intervals)) calc(200% / var(--intervals))
+    ) !important;
+}
+
+/* grey for deadtime */
+.color-box.deadtime { background-color: #dddddd; } /* pick your grey */
+
+/* hide deadtime legend by default; JS will show it in 1deadtime mode */
+/* [id$='-legend-deadtime'] { display: none; } */
+
+
+/* =========================
+   Present mode: 32 intervals, center 16 green
+   ========================= */
+
+/* Colors for present mode segments */
+.present32 {
+  --present-on:  #e6ffd0; /* green-ish present zone */
+  --present-off: #f0f0f0; /* light grey edges */
+}
+
+/* Firefox/general: paint background on the input */
+.present32 .frame-slider {
+  background: linear-gradient(
+    to right,
+    var(--present-off) 0,
+    var(--present-off) calc(100% * 8 / 32),
+    var(--present-on)  calc(100% * 8 / 32),
+    var(--present-on)  calc(100% * 24 / 32),
+    var(--present-off) calc(100% * 24 / 32),
+    var(--present-off) 100%
+  ) !important;
+}
+
+/* WebKit/Blink track */
+.present32 .frame-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--present-off) 0,
+    var(--present-off) calc(100% * 8 / 32),
+    var(--present-on)  calc(100% * 8 / 32),
+    var(--present-on)  calc(100% * 24 / 32),
+    var(--present-off) calc(100% * 24 / 32),
+    var(--present-off) 100%
+  ) !important;
+}
+
+/* Show past/future in PRESENT mode and make them grey */
+.present32 [id$='-legend-past'],
+.present32 [id$='-legend-future'] {
+	display: inline-flex; /* override the default 'display:none' */
+}
+/* Show past/future legend in pastfuture mode too */
+.pastfuture-active [id$='-legend-past'],
+.pastfuture-active [id$='-legend-future'] {
+  display: inline-flex;
+}
+
+
+.present32 .color-box.past,
+.present32 .color-box.future {
+	background-color: #dddddd;
+}

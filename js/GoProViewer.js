@@ -243,7 +243,7 @@ class GoProViewer {
     }
 
     getTemporalRegion(frameIndex) {
-        if (frameIndex <= 4) return 'past';
+        if (frameIndex <= 3) return 'past';
         if (frameIndex >= 12) return 'future';
         return 'present';
     }

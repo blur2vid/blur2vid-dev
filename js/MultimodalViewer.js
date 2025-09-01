@@ -211,7 +211,7 @@ class MultimodalViewer {
         this.video_elements.forEach(video => video.classList.add(`video-glow-${region}`));
     }
     getTemporalRegion(frameIndex) {
-        if (frameIndex <= 4) return 'past';
+        if (frameIndex <= 3) return 'past';
         if (frameIndex >= 12) return 'future';
         return 'present';
     }

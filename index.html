@@ -943,7 +943,7 @@
       <h2 class="title">Multimodal Generation</h2>
       <div class="content has-text-justified">
         <p class="content has-text-justified">
-          A short blurb on multimodal generation.
+          Many different videos could potentially be consistent with an input motion-blurred image because the direction of motion is inherently ambiguous. We find that our model captures this ambiguity through a multi-modal distribution over generated motions, which we assess by sampling multiple output videos for a given input image.
         </p>
       </div>
         <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
@@ -1049,7 +1049,7 @@
       <h2 class="title">Exposure Interval Control</h2>
       <div class="content has-text-justified">
         <p class="content has-text-justified">
-          A short blurb on exposure interval control.
+          The exposure interval encoding enables video generation with control over the start and end times of the generated frames. To test the effectiveness of this mechanism, we evaluate the accuracy of the predicted video frames under varying exposure interval configurations. Specifically, we test two scenarios: one with varying frame durations relative to the input motion-blurred image, and another with dead time between generated frames.
         </p>
       </div>
         <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
@@ -1145,10 +1145,10 @@
     <div class="hero-body">
     <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
       <br/>
-      <h2 class="title">Local vs Global Embedding</h2>
+      <h2 class="title">Proposed vs Alternate Embedding</h2>
       <div class="content has-text-justified">
         <p class="content has-text-justified">
-          A short blurb on local vs global embedding.
+          We also compare against an alternative exposure interval encoding scheme. Instead of explicitly providing the per-frame exposure intervals as input, we fine-tuned a new model whose temporal conditioning signal consists of (1) the start time of the first output frame, (2) the end time of the last output frame, (3) the (uniform) duration of individual frames, and (4) the number of frames. This scheme contains equivalent information, but encodes the intervals implicitly.
         </p>
       </div>
         <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
@@ -1176,8 +1176,8 @@
               </td>
             </tr>
             <tr>
-              <th style="font-size: 1.5em;  padding: 0.5em;">Alternate (Global) Embedding</th>
-              <th style="font-size: 1.5em;  padding: 0.5em;">Proposed (Local) Embedding</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Alternate Embedding</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Proposed Embedding</th>
             </tr>
               
               <td>

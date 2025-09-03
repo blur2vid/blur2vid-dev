@@ -13,8 +13,8 @@ class ExposureControlViewer {
         this.anim_dir = 1;
         this.max_idx = 16; // will be overridden by updateSliderForMethod()
 
-        this.assets_path = `ds_assets`;
-        this.ds = true; // optional flag if you toggle resolution elsewhere
+        this.assets_path = `assets`;
+        this.ds = false; // optional flag if you toggle resolution elsewhere
 
         // Cache DOM elements
         this.input_img = document.getElementById(`${this.prefix}-blurry`);

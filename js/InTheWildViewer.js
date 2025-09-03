@@ -12,8 +12,8 @@ class InTheWildViewer {
 		this.base_im = '0000';
 		this.interval_id = null;
 		this.anim_dir = 1;
-		this.ds = true;
-		this.assets_path = `ds_assets`;
+		this.ds = false;
+		this.assets_path = `assets`;
 
 		/* ------------ Elements ------------ */
 		this.ours_recon       = document.getElementById(`${this.prefix}-ours`);

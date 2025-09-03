@@ -10,8 +10,8 @@ class MultimodalViewer {
 		this.base_im = '0000';
 		this.interval_id = null;
 		this.anim_dir = 1;
-		this.ds = true;
-		this.assets_path = `ds_assets`;
+		this.ds = false;
+		this.assets_path = `assets`;
 
 		this.v1 = document.getElementById(`${this.prefix}-1`);
 		this.v2 = document.getElementById(`${this.prefix}-2`);

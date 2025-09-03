@@ -10,8 +10,8 @@ class EmbeddingViewer {
         // this.method = 'present';
         this.interval_id = null;
         this.anim_dir = 1;
-        this.ds = true;
-        this.assets_path = `ds_assets`;
+        this.ds = false;
+        this.assets_path = `assets`;
 
         this.input_img = document.getElementById(`${this.prefix}-blurry`);
         this.ground_truth = document.getElementById(`${this.prefix}-ground-truth`);

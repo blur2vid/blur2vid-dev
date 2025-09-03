@@ -12,8 +12,8 @@ class BaistViewer {
         this.method = 'present';
         this.interval_id = null;
         this.anim_dir = 1;
-        this.ds = true;
-        this.assets_path = `ds_assets`;
+        this.ds = false;
+        this.assets_path = `assets`;
 
         this.ours_recon = document.getElementById(`${this.prefix}-ours`);
         this.ours_tracks = document.getElementById(`${this.prefix}-ours-tracks`);

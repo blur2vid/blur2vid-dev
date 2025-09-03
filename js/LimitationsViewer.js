@@ -10,7 +10,7 @@ class LimitationsViewer {
 		this.base_im = '0000';
 		this.interval_id = null;
 		this.anim_dir = 1;
-		this.assets_path = `ds_assets`;
+		this.assets_path = `assets`;
 
 		this.ours_recon       = document.getElementById(`${this.prefix}-ours`);
 		this.ours_tracks      = document.getElementById(`${this.prefix}-ours-tracks`);

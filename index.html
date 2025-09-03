@@ -44,7 +44,7 @@
 </head>
 <body>
 
-  <script src="js/main.js"></script>
+<script src="js/main.js"></script>
 <script src="js/SimulatedViewer.js"></script>
 <script src="js/InTheWildViewer.js"></script>
 <script src="js/HistoricalViewer.js"></script>
@@ -53,54 +53,62 @@
 <script src="js/LimitationsViewer.js"></script>
 <script src="js/PoseViewer.js"></script>
 <script src="js/ResControl.js"></script>
-
+<script src="js/MultimodalViewer.js"></script>
+<script src="js/EmbeddingViewer.js"></script>
+<script src="js/ExposureControlViewer.js"></script>
 
 
 <section class="hero">
-    <div class="hero-body" style="padding-bottom:0;">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 style="font: 1em;" class="title is-1 publication-title text-muted" >
-              Generating the Past, Present and Future from a Motion-Blurred Image
-            </h1>
-            <!-- <div class="is-size-5 publication-authors">
-              <span class="author-block">Anonymous Author(s)</span>
-            </div>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">Submission ID: 1460</span>
-            </div>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">SIGGRAPH Asia 2025</span>
-            </div> -->
+	<div class="hero-body" style="padding-bottom:0;">
+		<div class="container is-max-desktop">
+			<div class="columns is-centered">
+				<div class="column has-text-centered">
+					<h1 style="font: 1em;" class="title is-1 publication-title text-muted">
+						Generating the Past, Present and Future from a Motion-Blurred Image
+					</h1>
+					<!--
+					<div class="is-size-5 publication-authors">
+						<span class="author-block">Anonymous Author(s)</span>
+					</div>
+					<div class="is-size-5 publication-authors">
+						<span class="author-block">Submission ID: 1460</span>
+					</div>
+					<div class="is-size-5 publication-authors">
+						<span class="author-block">SIGGRAPH Asia 2025</span>
+					</div>
+					-->
+					<div>
+						<span class="author-block">
+							<strong>
+								Website was tested and built on Chrome. If you have any issues, please try another browser.
+							</strong>
+							<br />
+							<strong>
+								You can switch our website to full resolution, if your browser has sufficient memory. Otherwise we recommend viewing at half resolution.
+							</strong>
+						</span>
+					</div>
+					<div>
+						<span class="author-block">
+							<strong>
+								All video files are located in the
+								<a href="assets/" target="_blank"><strong>assets</strong></a>
+								directory of our webpage.
+							</strong>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
-            <div>
-  <span class="author-block">
-    <strong>Website was tested and built on Chrome. If you have any issues, please try another browser. </strong> 
-    <br/>
-    <strong> You can switch our website to full resolution, if your browser has sufficient memory. Otherwise we recommend viewing at half resolution. </strong> 
+<br/>
 
-  </span>
-</div>
-<div>
-  <span class="author-block">
-    <strong>All video files are located in the 
-    <a href="assets/" target="_blank"><strong>assets</strong></a> 
-    directory of our webpage.</strong>
-  </span>
-</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <br/>
-
-
- <div id="res-toggle" class="buttons is-centered">
+<div id="res-toggle" class="buttons is-centered">
           <button class="button is-info is-light" data-method="fullres" onclick="res_control.setResolution('full')">Full Resolution</button>
           <button class="button is-info" data-method="halfres" onclick="res_control.setResolution('half')">Half Resolution</button>
-  </div>
+</div>
 
 <section class="hero teaser">
     <div class="hero-body">
@@ -290,28 +298,6 @@
                      style="width: 95%; border-radius: 1em;"></video>
             </td>
           </tr>
-          <!-- <tr class="hide-on-pastfuture">
-            <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">MotionETR</th>
-            <td>
-              <video id="historical-motionetr"  muted 
-                     style="width: 95%; border-radius: 1em;;"></video>
-            </td>
-            <td>
-              <video id="historical-motionetr-tracks"  muted
-                     style="width: 95%; border-radius: 1em;;"></video>
-            </td>
-          </tr>
-          <tr class="hide-on-pastfuture">
-            <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Jin et al.</th>
-            <td>
-              <video id="historical-jin"  muted 
-                     style="width: 95%; border-radius: 1em;;"></video>
-            </td>
-            <td>
-              <video id="historical-jin-tracks"  muted 
-                     style="width: 95%; border-radius: 1em;;"></video>
-            </td>
-          </tr> -->
         </tbody>
       </table>
       
@@ -954,6 +940,302 @@
   </section>
   
   <br/>
+
+
+<section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Multimodal Generation</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          Many different videos could potentially be consistent with an input motion-blurred image because the direction of motion is inherently ambiguous. We find that our model captures this ambiguity through a multi-modal distribution over generated motions, which we assess by sampling multiple output videos for a given input image.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='multi-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+        <div id="multi-method-toggle" class="buttons is-centered">
+          <button class="button is-info" data-method="present" onclick="multimodal_viewer.set_method('present')">Present Predictions</button>
+          <button class="button is-info is-light" data-method="pastfuture" onclick="multimodal_viewer.set_method('pastfuture')">Past & Future Predictions</button>
+        </div>
+        <!-- <h3 class="subtitle">Video Reconstruction</h3> -->
+        <!-- Blurry Image centered -->
+        <div class="has-text-centered" style="margin-bottom: 1em;">
+          <img id="multi-input" style="width: 40%; border-radius: 1em; margin-bottom: 0.75em" />
+          <h5 style="font-size: 1.5em;  padding: 0.5em;"> <strong>Blurry Image</strong></h5>
+        </div>
   
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 1</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!-- <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Ours</th> -->
+              <td>
+                <video id="multi-1" muted 
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+              <td>
+                <video id="multi-2" muted
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+              <!-- <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">MotionETR</th> -->
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 3</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Video 4</th>
+            </tr>
+              
+              <td>
+                <video id="multi-3" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+              <td>
+                <video id="multi-4" muted
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+  
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="multi-play-pause-btn" class="button is-info" onclick="multimodal_viewer.toggle_play_pause()">
+              <span class="icon"><i id="multi-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="multi_frame_control"
+              class="frame-slider"
+              oninput="multimodal_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="multi-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="multi-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="multi-legend-future"><span class="color-box future"></span>Future Predictions</div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
+
+
+    <!-- EXPOSURE CONTROL RESULTS-->
+  <section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Exposure Interval Control</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          The exposure interval encoding enables video generation with control over the start and end times of the generated frames. To test the effectiveness of this mechanism, we evaluate the accuracy of the predicted video frames under varying exposure interval configurations. Specifically, we test two scenarios: one with varying frame durations relative to the input motion-blurred image, and another with dead time between generated frames.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='expcontrol-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+        <!-- <div id="expcontrol-method-toggle" class="buttons is-centered">
+          <button class="button is-info" data-method="present" onclick="exposure_control_viewer.set_method('present')">Present Predictions</button>
+          <button class="button is-info is-light" data-method="pastfuture" onclick="exposure_control_viewer.set_method('pastfuture')">Past & Future Predictions</button>
+        </div> -->
+        <div id="expcontrol-method-toggle" class="buttons is-centered">
+          <button class="button is-info"        data-method="2frame"  onclick="exposure_control_viewer.set_method('2frame')">2 frames</button>
+          <button class="button is-info is-light" data-method="4frame"  onclick="exposure_control_viewer.set_method('4frame')">4 frames</button>
+          <button class="button is-info is-light" data-method="8frame"  onclick="exposure_control_viewer.set_method('8frame')">8 frames</button>
+          <button class="button is-info is-light" data-method="16frame"  onclick="exposure_control_viewer.set_method('16frame')">16 frames</button>
+          <button class="button is-info is-light" data-method="1deadtime" onclick="exposure_control_viewer.set_method('1deadtime')">1 deadtime</button>
+        </div>
+
+        <div class="has-text-centered" style="margin-bottom: 1em;">
+          <img id="expcontrol-blurry"  style="width: 40%; border-radius: 1em; margin-bottom: 0.75em" />
+          <h5 style="font-size: 1.5em;  padding: 0.5em;"> <strong>Blurry Image  </strong></h5>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th></th> <!-- Empty corner cell -->
+              <th style="font-size: 1.5em;  padding: 0.5em;">Ground Truth</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Recovered Video</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="font-size: 1.5em; padding: 0.5em; text-align: center; vertical-align: middle;">Ours</th>
+              <td>
+                <video id="expcontrol-gt"  muted 
+                      style="width: 95%; border-radius: 1em;"></video>
+              </td>
+              <td>
+                <video id="expcontrol-vid"  muted
+                      style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="expcontrol-play-pause-btn" class="button is-info" onclick="exposure_control_viewer.toggle_play_pause()">
+              <span class="icon"><i id="expcontrol-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="expcontrol_frame_control"
+              class="frame-slider"
+              oninput="exposure_control_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="expcontrol-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="expcontrol-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="expcontrol-legend-future"><span class="color-box future"></span>Future Predictions</div>
+                <div class="legend-item is-hidden" id="expcontrol-legend-deadtime">
+                  <span class="color-box deadtime"></span>Deadtime
+                </div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
+  
+
+<section class="hero teaser">
+    <div class="hero-body">
+    <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+      <br/>
+      <h2 class="title">Proposed vs Alternate Embedding</h2>
+      <div class="content has-text-justified">
+        <p class="content has-text-justified">
+          We also compare against an alternative exposure interval encoding scheme. Instead of explicitly providing the per-frame exposure intervals as input, we fine-tuned a new model whose temporal conditioning signal consists of (1) the start time of the first output frame, (2) the end time of the last output frame, (3) the (uniform) duration of individual frames, and (4) the number of frames. This scheme contains equivalent information, but encodes the intervals implicitly.
+        </p>
+      </div>
+        <div style='border-radius:1em;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding:1em;' class="container is-max-desktop has-text-centered">
+          <h5 style="text-align:left;">Scene Selection</h5>
+          <div id='emb-scene-selector' style="display:flex; flex-flow: row wrap; justify-content: flex-start;">
+          </div>
+        </div>
+        <br/>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center;">
+          <thead>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Blurry Image</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Ground Truth</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img id="emb-blurry" style="width: 95%; border-radius: 1em" />
+              </td>
+              <td>
+                <video id="emb-ground-truth" muted
+                       style="width: 95%; border-radius: 1em;"></video>
+              </td>
+            </tr>
+            <tr>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Alternate Embedding</th>
+              <th style="font-size: 1.5em;  padding: 0.5em;">Proposed Embedding</th>
+            </tr>
+              
+              <td>
+                <video id="emb-global" muted 
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+              <td>
+                <video id="emb-local" muted
+                       style="width: 95%; border-radius: 1em;;"></video>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+  
+        <div class="container is-max-desktop has-text-centered" style="padding: 1em 1.5em; border-radius: 1em; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 10px;">
+          <div class="is-flex is-align-items-center is-justify-content-space-between" style="margin-bottom: 0.75em;">
+            <h5 style="font-size: 1.1em; margin: 0;">Frame Control</h5>
+            <button id="emb-play-pause-btn" class="button is-info" onclick="embedding_viewer.toggle_play_pause()">
+              <span class="icon"><i id="emb-play-pause-icon" class="fas fa-play"></i></span>
+              <span style="font-size: 1rem; font-weight: 500;">Play</span>
+            </button>
+          </div>
+        
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="16"
+              step="1"
+              value="0"
+              id="emb_frame_control"
+              class="frame-slider"
+              oninput="embedding_viewer.change_frame(this.value);"
+            />
+            <div class="slider-ticks">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span>
+
+            </div>
+            <div class="slider-legend">
+              <div class="legend-item" id="emb-legend-past"><span class="color-box past"></span>Past Predictions</div>
+              <div class="legend-item" id="emb-legend-present"><span class="color-box present"></span>Present (within exposure time)</div>
+              <div class="legend-item" id="emb-legend-future"><span class="color-box future"></span>Future Predictions</div>
+            </div>
+          </div> 
+        </div> <!-- container is-max-desktop -->
+      </div> <!-- hero-body -->
+    </div> <!-- section container -->
+  </section>
+
   </body>
   </html>

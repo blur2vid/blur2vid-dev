@@ -3,7 +3,7 @@ class BaistViewer {
         this.prefix = 'baist';
         this.max_idx = 7;
         this.n_scenes = 8;
-        this.playback_speed = 0.2;
+        this.playback_speed = 0.8;
 
         this.num_videos = 6;
         
@@ -12,6 +12,8 @@ class BaistViewer {
         this.method = 'present';
         this.interval_id = null;
         this.anim_dir = 1;
+        this.ds = true;
+        this.assets_path = `ds_assets`;
 
         this.ours_recon = document.getElementById(`${this.prefix}-ours`);
         this.ours_tracks = document.getElementById(`${this.prefix}-ours-tracks`);
@@ -29,7 +31,6 @@ class BaistViewer {
         this.initSliderSync();
         this.isPlaying = true;
         this.toggle_play_pause();
-
 
         //this.initialize_slider_sync();
     }
@@ -58,39 +59,62 @@ class BaistViewer {
         }
     }
 
+    initSliderThumbBar() {
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (!slider) return;
 
+        // 16 intervals → 16 positions → 0..15
+        slider.min = 0;
+        slider.max = this.max_idx - 1;   // was: this.max_idx
+        slider.step = 1;
+
+        // for CSS that sizes the bar/segment width (16 intervals)
+        slider.style.setProperty('--intervals', this.max_idx); // stays 16
+
+        // keep current value in range if something set it earlier
+        if (parseInt(slider.value, 10) > this.max_idx - 1) slider.value = this.max_idx - 1;
+    }
 
     /* Slider sync combining both versions */
     initSliderSync() {
         if (!this.ours_recon) return;
         const slider = document.getElementById(`${this.prefix}_frame_control`);
         if (!slider) return;
+
+        this.initSliderThumbBar();
+
         this.ours_recon.addEventListener('loadedmetadata', () => {
             this.ours_recon.addEventListener('timeupdate', () => {
-                if (!this.ours_recon.duration) return;
-                const progress = this.ours_recon.currentTime / this.ours_recon.duration;
+            if (!this.ours_recon.duration) return;
+            const progress = this.ours_recon.currentTime / this.ours_recon.duration; // 0..1
+            const k = Math.min(Math.floor(progress * this.max_idx), this.max_idx - 1); // 0..15
 
-                const newVal = Math.round(progress * ((this.max_idx) || parseInt(slider.max) ));
-                if (parseInt(slider.value) !== newVal) {
-                    slider.value = newVal;
-                    this.cur_frame = newVal;
-                    this.applyGlowEffect();
-                }
+            if (parseInt(slider.value, 10) !== k) {
+                slider.value = k;
+                this.cur_frame = k;
+                this.applyGlowEffect();
+            }
             });
         });
     }
+
     /* Update frame on slider change */
     change_frame(idx) {
-        //this.stop_anim();
-        this.cur_frame = parseInt(idx);
-        const norm = this.cur_frame / (this.max_idx);
+        const k = Math.max(0, Math.min(this.max_idx - 1, parseInt(idx, 10))); // 0..15
+        this.cur_frame = k;
+
+        // Seek to middle of [k, k+1] so UI & playback align to the interval
+        const norm = (k + 0.5) / this.max_idx; // 0..1
         this.video_elements.forEach(video => {
             if (video && video.duration) {
-                video.currentTime = norm * video.duration;
-
+            video.currentTime = norm * video.duration;
             }
-
         });
+
+        // keep the range control in sync
+        const slider = document.getElementById(`${this.prefix}_frame_control`);
+        if (slider && parseInt(slider.value, 10) !== k) slider.value = k;
+
         this.applyGlowEffect();
     }
 
@@ -99,11 +123,21 @@ class BaistViewer {
         this.base_im = scene_id;
         this.cur_frame = 0;
         if (this.input_img) {
-            this.input_img.src = `assets/${this.prefix}/blurry/${scene_id}_${this.method}.png`;
+            this.input_img.src = `${this.assets_path}/${this.prefix}/blurry/${scene_id}_present.png`;
         }
         this.loadVideos();
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(0);
     }
+    
+
+    setResolution(resolution) {
+        console.log(`Setting resolution to: ${resolution}`);
+        this.ds = resolution === "half";
+        this.assets_path = this.ds ? `ds_assets` : `assets`;
+        this.change_scene(this.base_im);  // reload videos with new resolution
+    }
+
 
     /* Load video sources */
     loadVideos() {
@@ -154,8 +188,6 @@ class BaistViewer {
             const delayMs = 100;
             this.cycle_frames(delayMs);
         }
-    
-
 
         // flip the play/pause button state
         this.updatePlayButton();
@@ -178,7 +210,7 @@ class BaistViewer {
 
     /* Animation controls */
     next_frame() {
-        if (this.cur_frame >= this.max_idx) this.anim_dir = -1;
+        if (this.cur_frame >= this.max_idx - 1) this.anim_dir = -1; // was: >= this.max_idx
         if (this.cur_frame === 0) this.anim_dir = 1;
         this.change_frame(this.cur_frame + this.anim_dir);
     }
@@ -200,7 +232,7 @@ class BaistViewer {
         this.video_elements.forEach(video => video.classList.add(`video-glow-${region}`));
     }
     getTemporalRegion(frameIndex) {
-        if (frameIndex <= 4) return 'past';
+        if (frameIndex <= 3) return 'past';
         if (frameIndex >= 12) return 'future';
         return 'present';
     }
@@ -209,9 +241,6 @@ class BaistViewer {
     set_method(name) {
         this.method = name;
         this.loadVideos();
-        if (this.input_img) {
-            this.input_img.src = `assets/${this.prefix}/blurry/${this.base_im}_${name}.png`;
-        }
         document.querySelectorAll(`#${this.prefix}-method-toggle button`).forEach(btn => {
             btn.classList.toggle("is-info", btn.dataset.method === name);
             btn.classList.toggle("is-light", btn.dataset.method !== name);
@@ -222,6 +251,7 @@ class BaistViewer {
             const el = document.getElementById(`${this.prefix}-legend-${region}`);
             if (el) el.style.display = name === "pastfuture" ? "inline-flex" : "none";
         });
+        this.initSliderThumbBar();   // <— add this
         this.change_frame(this.cur_frame);
     }
 }

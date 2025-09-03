@@ -28,7 +28,7 @@ class ExposureControlViewer {
         // Prepare slider/ticks for current method
         this.updateSliderForMethod();
         this.updateDeadtimeStyle();
-        this.updateDeadtimeLegend();
+        this.updateDeadtimeLegend(); 
 
         // Start paused; call toggle_play_pause() if you want autoplay
         this.isPlaying = false;

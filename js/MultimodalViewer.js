@@ -1,7 +1,7 @@
 class MultimodalViewer {
 	constructor() {
 		this.prefix = 'multi';
-		this.n_scenes = 4;
+		this.n_scenes = 3;
 		this.playback_speed = 0.2;
 
 		this.method = 'present';

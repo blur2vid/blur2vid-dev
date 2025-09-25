@@ -1,7 +1,7 @@
 class HistoricalViewer {
     constructor() {
         this.prefix = 'historical';
-        this.n_scenes = 9;
+        this.n_scenes = 8;
         this.playback_speed = 0.2;
 
         this.method = 'present';

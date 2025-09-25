@@ -2,7 +2,7 @@ class InTheWildViewer {
 	constructor() {
 		/* ------------ Config ------------ */
 		this.prefix = 'wild';
-		this.n_scenes = 32;
+		this.n_scenes = 21;
 		this.playback_speed = 0.2;      // seconds per “frame” (used via delayMs below)
 
 		/* ------------ State ------------ */

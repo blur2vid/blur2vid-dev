@@ -1,7 +1,7 @@
 class SimulatedViewer {
 	constructor() {
 		this.prefix = 'simulated';
-		this.n_scenes = 8;
+		this.n_scenes = 3;
 		this.playback_speed = 0.2;
 
 		this.method = 'present';
